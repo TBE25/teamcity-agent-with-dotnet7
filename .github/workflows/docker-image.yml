@@ -7,18 +7,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Login to DockerHub
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag tbe25/teamcity-agent:2023.05.2
-  upload:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Push to dockerhub
-        run: docker push tbe25/teamcity-agent:2023.05.2
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: docker build . --file Dockerfile -t tbe25/teamcity-agent:2023.05.2
+    - name: Push the Docker image
+      run: docker push tbe25/teamcity-agent:2023.05.2

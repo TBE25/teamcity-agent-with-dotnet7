@@ -18,7 +18,7 @@ jobs:
     needs: build
     steps:
       - name: Push to dockerhub
-        run: docker push docker.io/tbe25/teamcity-agent:2023.05.2
+        run: docker push tbe25/teamcity-agent:2023.05.2
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
